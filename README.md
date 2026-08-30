@@ -1,111 +1,37 @@
-# Customer Support Chatbot with Amazon Bedrock Flows
+# Purpose of This Repo
 
-In this project you will build a customer support chatbot using Amazon Bedrock Flows. The chatbot will handle customers' questions on a fictional website, and will need to handle one of the following types of messages:
-* bug reports
-* platform related questions that can be answered from FAQ.
+This repo is meant to be used to keep things organized during content development and act as the source of truth for all projects and exercises related to this course.
 
-There are a number of resources that will be available to you to develop this application:
+## Folder Structure
 
-* `create_bug_report` - a tool that can create a ticket in a database
-* `online_shop_faq.md` - a fictional FAQ that your application should use to respond to customer requests
+### Lesson Folder
 
-You would need to create a Bedrock Flow application, and then test it in various scenarios.
+This repo contains a folder for each `lesson` and one `project` folder.
 
-## Getting Started
-
-### Dependencies
-
-- An AWS account with Amazon Bedrock access enabled.
-- AWS CLI configured with appropriate credentials.
-- Python 3.9+ with `boto3` installed.
-- Access to an Amazon Bedrock model (the solution uses Amazon Nova models, but you can use any supported model).
-
-### Project Files
-
-| File | Description |
-|------|-------------|
-| `docs/tools-setup.md` | Step-by-step guide for creating the bug report tool. |
-| `docs/testing.md` | Step-by-step guide for automated testing and running Bedrock Evaluations. |
-| `solution/` | Reference solution with the complete flow definition, test prompts, and a diagram. |
-| `cloudformation-tool.yaml` | A template for creating a tool you would need for this application. |
-| `cloudformation-testing.yaml` | A template for creating resources to test your final application. |
-| `create_bug_report.py` | Lambda function that implements a tool that stores bug reports in DynamoDB. |
-| `generate-eval-dataset.py` | Script that runs your flow against a test suite and produces a JSONL file for Bedrock Evaluations. |
-| `flow-tests-template.json` | Template for developing your test suite. |
-
-## Project Instructions
-
-### Step 1: Create Resources for your application
-
-First you will deploy a tool that your application will need to create bug reports and other related resources.
-
-When a customer reports a bug, the chatbot needs to persist it somewhere so the engineering team can follow up. In this project we use a DynamoDB table as a simple ticket store, and a Lambda function as the tool that Bedrock Agents can call to create a new ticket.
-
-Follow the detailed walkthrough in [Tools Setup](docs/tools-setup.md), to ensure that you have everything you need for the rest of the project
-
-### Step 2: Build the Bedrock Flow
-
-Now having a tool set up, you can start developing Bedrock Flow application. Your application would need to handle three different types of requests:
-
-- **Bug reports** - if a customer reports a bug on the web site. In this case, the application would need to collect additional information and create a ticket for the reported bug using the tool you've created in the previous step.
-- **Platform questions** - the application should answer common questions about orders, shipping, returns, and payments using an FAQ.
-- **Other requests** - in case if the question cannot be answered using FAQ and not a bug report, and application should politely redirected to a human support phone line.
-
-The tool you've deployed accepts three parameters:
-
-* Bug description
-* Steps to reproduce
-* Environment where a user has experienced a bug
-
-Make sure that your application collects this data when creating a bug report.
-
-Platform questions (orders, shipping, returns, payments) need to be answered from the product's FAQ. Here we will use the simplest approach and embed the document directly in the prompt — the model will see it at inference time and answers from it.
-
-> **Note:** Embedding documents in the prompt works well for short, stable content like a FAQ. For large documents, embedding the full text in every prompt becomes expensive and hits context limits. The standard solution is **Retrieval-Augmented Generation (RAG)**, which retrieves only the relevant passages at query time using a vector index. RAG with Amazon Bedrock Knowledge Bases is outside the scope of this course.
-
-#### Some suggestions
-
-Here are some things to keep in mind when working on your application:
-
-* Condition nodes in Bedrock Flows use exact string matching, so the classification output needs to be predictable.
-* You can use an agent node to collect more information about a bug if initial request is unclear or incomplete. To allow an agent to ask additional questions you need to enable "User input" option in "Advanced settings".
-* A single Output node can't receive connections from multiple branches. You need a separate Output node for each path.
-* For platform questions, embed your FAQ directly in the prompt.
-* Don't forget to deploy resources once you change them. For example you need to prepare agents if you change them.
-* Try to implement and test your solution step by step.
-* Use us-east-1 region, as some smaller regions might not have all Bedrock features.
-
-## Step 3: Testing
-
-Once you have your Bedrock Flow application you can test it manually using the chat interface in Bedrock Flows. However, this approach is too tedious and not scalable. Ideally we want to have an automated way to test your application.
-
-To test your application you will do the following:
-
-* Create a set of test prompts and define expected results
-* Run your application programmatically on this set of prompts
-* Use Bedrock Evaluations to evaluate your application's outputs
-
-You need to follow the steps in the [Testing and Evaluation](docs/testing.md) document to run automated tests and evaluate your flow.
-
-## Cleanup
-
-When you are done with the project, delete the CloudFormation stacks to avoid ongoing charges:
-
-```bash
-aws cloudformation delete-stack --stack-name bug-report-tool-stack --region us-east-1
-aws cloudformation delete-stack --stack-name bug-report-testing-stack --region us-east-1
+Example
+```
+lesson-1-hello
+lesson-2-world
+lesson-3-foo
+lesson-4-bar
+project
 ```
 
-This removes the Lambda function, DynamoDB table, IAM roles, and S3 bucket created during the project.
+Each `lesson` folder is named using the naming convention of `lesson-#-name-of-lesson`.
 
-## Built With
+Example
+```
+lesson-1-hello
+```
 
-* [Amazon Bedrock Flows](https://docs.aws.amazon.com/bedrock/latest/userguide/flows.html) - Orchestration of the LLM application
-* [Amazon Bedrock Agents](https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html) - Tool use for bug report creation
-* [Amazon Bedrock Evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html) - LLM-as-a-judge evaluation
-* [AWS Lambda](https://aws.amazon.com/lambda/) - Bug report tool runtime
-* [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) - Bug report storage
+Four lesson folders have been provided as a template; However, you may need to add more or possibly use less than four depending on what is needed.
 
-## License
+If you require an additional lesson folder, you can make a copy of the folder and paste it into the root directory.
 
-[License](../LICENSE.md)
+### Exercises Folder
+
+Each `lesson` folder contains an `exercises` folder. This `exercises` folder should contain all files and instructions necessary for the exercises along with the solution. The solutions for these exercises will be shared with students. See the `README` in the `exercises` folder for information about folder structure.
+
+### Project Folder
+
+The `project` folder should contain all files and instructions necessary for setup. If possible, a set of instructions should be provided for both Udacity workspaces and a way to work locally (for both MacOS and Windows OS). At a minimum, one set of instructions should be provided. A `README` template has been provided in the project folder. This template layout should be used to write your README.
