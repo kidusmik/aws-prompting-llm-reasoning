@@ -1,0 +1,39 @@
+{
+  "jobName": "support-chatbot-eval-final",
+  "roleArn": "arn:aws:iam::768858414642:role/bedrock-eval-role",
+  "evaluationConfig": {
+    "automated": {
+      "datasetMetricConfigs": [
+        {
+          "taskType": "General",
+          "dataset": {
+            "name": "support-chatbot-eval-dataset",
+            "datasetLocation": {
+              "s3Uri": "s3://udacity-agentic-engineer-c1-eval-768858414642/output_eval_dataset.jsonl"
+            }
+          },
+          "metricNames": ["Builtin.Correctness"]
+        }
+      ],
+      "evaluatorModelConfig": {
+        "bedrockEvaluatorModels": [
+          {
+            "modelIdentifier": "amazon.nova-pro-v1:0"
+          }
+        ]
+      }
+    }
+  },
+  "inferenceConfig": {
+    "models": [
+      {
+        "precomputedInferenceSource": {
+          "inferenceSourceIdentifier": "my-support-chatbot"
+        }
+      }
+    ]
+  },
+  "outputDataConfig": {
+    "s3Uri": "s3://udacity-agentic-engineer-c1-eval-768858414642/results/"
+  }
+}
