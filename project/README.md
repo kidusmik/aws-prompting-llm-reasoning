@@ -106,6 +106,20 @@ This removes the Lambda function, DynamoDB table, IAM roles, and S3 bucket creat
 * [AWS Lambda](https://aws.amazon.com/lambda/) - Bug report tool runtime
 * [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) - Bug report storage
 
+## Platform Question and Other Request Evidence
+
+### 1. Covered FAQ Response
+![Covered FAQ Response](starter/screenshots/01_covered_faq_response.png)
+
+### 2. Uncovered FAQ Question Response (Redirect to Phone Support)
+![Uncovered FAQ Response](starter/screenshots/02_uncovered_question_response.png)
+
+### 3. Other Request Response (Redirect to Phone Support)
+![Other Request Response](starter/screenshots/03_other_request_response.png)
+
+### 4. FAQ Embedded Prompt Template
+![FAQ Prompt Template](starter/screenshots/04_faq_prompt_template.png)
+
 ## License
 
 [License](../LICENSE.md)
